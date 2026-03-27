@@ -10,8 +10,21 @@ connectDB();
 
 const app = express();
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://devdoc-ai-frontend.vercel.app',
+];
+
 app.use(cors({
-  origin: 'https://devdoc-ai-frontend.vercel.app/',
+  origin: (origin, callback) => {
+    // Allow requests with no origin (e.g. mobile apps, Postman, curl)
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS blocked for origin: ${origin}`));
+    }
+  },
   credentials: true,
 }));
 
