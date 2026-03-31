@@ -8,10 +8,10 @@ const generateToken = (id) => {
 // @desc    Register a new user
 // @route   POST /api/auth/register
 const registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role, experience, company } = req.body;
 
   if (!name || !email || !password) {
-    return res.status(400).json({ message: 'Please provide all fields' });
+    return res.status(400).json({ message: 'Please provide all required fields' });
   }
 
   const userExists = await User.findOne({ email });
@@ -19,13 +19,16 @@ const registerUser = async (req, res) => {
     return res.status(400).json({ message: 'User already exists with this email' });
   }
 
-  const user = await User.create({ name, email, password });
+  const user = await User.create({ name, email, password, role, experience, company });
 
   if (user) {
     res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
+      role: user.role,
+      experience: user.experience,
+      company: user.company,
       plan: user.plan,
       token: generateToken(user._id),
     });

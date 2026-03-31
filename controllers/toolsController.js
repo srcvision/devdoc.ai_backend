@@ -57,6 +57,17 @@ const createToolHandler = (toolType) => async (req, res) => {
 
   const prompt = prompts[toolType](code);
   const aiResponse = await generateContent(prompt);
+
+  // Check if AI detected non-technical input
+  if (aiResponse.includes('No valid code or technical input provided')) {
+    return res.json({ 
+      aiResponse, 
+      score: null, 
+      isInvalid: true,
+      message: 'The input provided does not appear to be code or technical content.' 
+    });
+  }
+
   const score = extractScores(aiResponse, toolType);
 
   const report = await Report.create({

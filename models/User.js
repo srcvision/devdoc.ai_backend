@@ -26,6 +26,18 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    role: {
+      type: String,
+      default: 'Developer'
+    },
+    experience: {
+      type: String,
+      default: 'Junior'
+    },
+    company: {
+      type: String,
+      default: ''
+    },
     plan: {
       type: String,
       enum: ['free', 'pro', 'enterprise'],
